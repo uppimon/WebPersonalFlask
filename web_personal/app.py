@@ -17,7 +17,33 @@ def contact():
 
 @app.route('/portfolio')
 def portfolio():
-    return render_template('public/portfolio.html')
+    projects = [ 
+    {
+            'name':'Primer proyecto',
+            'description':'As we got further away, it [the Earth] diminished in size. Finally it shrank to the size of a marbie, the most beautiful you can imagine. The beutiful, warm...',
+            'image':'img/home-bg.jpg',
+            'url': 'https://www.google.com'
+        },
+        {
+            'name':'Segundo proyecto',
+            'description':'As we got further away, it [the Earth] diminished in size. Finally it shrank to the size of a marbie, the most beautiful you can imagine. The beutiful, warm...',
+            'image':'img/about-bg.jpg',
+            'url': 'https://www.xataka.com'
+        },
+        {
+            'name':'Tercer Proyecto',
+            'description':'As we got further away, it [the Earth] diminished in size. Finally it shrank to the size of a marbie, the most beautiful you can imagine. The beutiful, warm...',
+            'image':'img/home-bg.jpg',
+            'url': 'https://www.google.com'
+        },
+        {
+            'name':'Cuartoo proyecto',
+            'description':'As we got further away, it [the Earth] diminished in size. Finally it shrank to the size of a marbie, the most beautiful you can imagine. The beutiful, warm...',
+            'image':'img/about-bg.jpg',
+            'url': 'https://www.xataka.com'
+        },
+    ]
+    return render_template('public/portfolio.html', projects=projects)
 
 ####### Rutas #######
 
