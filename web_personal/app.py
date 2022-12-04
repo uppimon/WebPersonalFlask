@@ -1,5 +1,10 @@
-from flask import Flask, render_template, request
+from flask import Flask, redirect, render_template, request, url_for
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, SubmitField, EmailField
+from wtforms.validators import DataRequired, Email
+
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'secret'
 
 ########### Rutas Public #########
 
@@ -44,30 +49,40 @@ def portfolio():
         },
     ]
     return render_template('public/portfolio.html', projects=projects)
+###############Formularios de WTForms##############
 
-####### Rutas #######
+class loginForm(FlaskForm):
+    email=EmailField('Correo', validators=[DataRequired(), Email()])
+    password=PasswordField('Contraseña', validators=[DataRequired()])
+    submit=SubmitField('Ingrese')
+####### Rutas Login #######
 
-@app.route('/auth/login')
+@app.route('/auth/login',  methods=['GET', 'POST'])
 def login():
-    return render_template('auth/login.html')
+    form=loginForm()
+    if form.validate_on_submit():
+        email = form.email.data
+        password = form.password.data
+        return render_template('admin/index.html', email=email)
+    
+    return render_template('/auth/login.html', form=form)
 
 @app.route('/auth/register')
 def register():
-    return render_template('auth/register.html')
+    return render_template('/auth/register.html')
 
 @app.route('/welcome', methods=['GET', 'POST'])
-def welcome():
-    email = request.form['mail']
-    password = request.form['password']
-    access = {'email':email}
-
-    return render_template('admin/index.html', user_access=access)
+def welcome(form):
+    if form.validate_on_submit():
+        email = form.email.data
+        password = form.password.data
+        return render_template('admin/index.html', email=email)
+    
+    return redirect(url_for('login'))
 
 @app.errorhandler(404)
 def page_error_not_found(e):
-    return render_template('error/404.html'), 404
+    return render_template('errores/404.html'), 404
 
-
-
-if __name__ == '__main__':
+if __name__=='__main__':
     app.run(debug=True)
